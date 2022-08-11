@@ -10,9 +10,8 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 class BoardsManager: ObservableObject {
-//    @Published private(set) var owners: [Owner] = []
     @Published var owners = [Owner]()
-
+    
     // Create an instance of our Firestore database
     private var db = Firestore.firestore()
     
@@ -37,18 +36,22 @@ class BoardsManager: ObservableObject {
             
             // Transform docs and store them to `owners`
             self.owners = documents.compactMap { (document) -> Owner? in
+                // Print the data from the network response before transforming
                 print("\(document.documentID) => \(document.data())")
+                
                 do {
-                  return try document.data(as: Owner.self)
+                    // Try to transform a document into an Owner model
+                    return try document.data(as: Owner.self)
                 }
                 catch {
-                  print(error)
+                    // Print the error and return nil if we could
+                    // not transform the document data
+                    print(error)
+                    return nil
                 }
-                
-                return nil // Could not transform owner
             }
             
-            
+            // Print transformed objects to console
             print("Owners: ", self.owners)
         }
     }
