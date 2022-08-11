@@ -8,14 +8,22 @@
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
-        Text("Hello, world!")
-            .padding()
-    }
-}
+    @ObservedObject private var viewModel = BoardsManager()
+    @State private var selectedOwner: String? = nil
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
+    
+    var body: some View {
+        NavigationView {
+            List(viewModel.owners) { owner in
+                Text(owner.user_name)
+            }
+            .navigationTitle("List")
+        }
+    }
+    
+    struct ContentView_Previews: PreviewProvider {
+        static var previews: some View {
+            ContentView()
+        }
     }
 }
